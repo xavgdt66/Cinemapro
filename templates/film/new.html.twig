@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouveau film
+{% endblock %}
+{% block body %}
+	<h1>Nouveau film</h1>
+	{{ form_start(filmForm) }}
+
+	<div class="form-group">
+		{{ form_label(filmForm.titre) }}
+		{{ form_widget(filmForm.titre) }}
+	</div>
+
+	{% for horaire in filmForm.horaires %}
+		<li>{{ form_row(horaire.heure) }}</li>
+	{% endfor %}
+
+
+	<button type="submit" class="btn btn-primary">add</button>
+
+	{{ form_end(filmForm) }}
+
+{% endblock %}
