@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\OptionsResolver\OptionsRsolver;
 
 class HoraireType extends AbstractType
 {
@@ -16,23 +18,9 @@ class HoraireType extends AbstractType
             ->add('heure', TimeType::class, [
                 'label' => 'Heure',
                 'widget' => 'choice',
-                'input' => 'timestamp',
                 'with_seconds' => false,
             ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
     public function configureOptions(OptionsResolver $resolver)
     {

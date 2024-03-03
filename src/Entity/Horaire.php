@@ -16,7 +16,7 @@ class Horaire
    private \DateTimeInterface $heure;
 
  ////////////////////////////////
-    #[ORM\ManyToOne(targetEntity:"App\Entity\Film", inversedBy:"horaires")]
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Film", inversedBy:"horaires")] 
     #[ORM\JoinColumn(nullable:false)]
     
     private $film;   

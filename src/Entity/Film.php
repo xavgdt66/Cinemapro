@@ -1,32 +1,37 @@
 <?php
+
 namespace App\Entity;
+
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FilmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue] 
+    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id; 
+    private int $id;
 
     #[ORM\Column(type: "string", length: 555, nullable: true)]
-    private string $titre; 
+    private string $titre;
 
 
     /////////////////////////////////////////////////////////
-   
-    #[ORM\OneToMany(targetEntity:"App\Entity\Horaire", mappedBy:"film")]
-     private $horaires;
+    // cascade: ["persist"] =  Cela permet d'enregistrer ton objet Film en enregistrant un objet enfant, ici Horaire.
+
+    #[ORM\OneToMany(targetEntity: "App\Entity\Horaire", mappedBy: "film", cascade: ["persist"])] 
+    private $horaires;
+
+
 
 
     public function __construct()
     {
-        $this->horaires = new ArrayCollection(); 
+        $this->horaires = new ArrayCollection();
     }
-
 
 
 
@@ -57,8 +62,8 @@ class Film
         return $this;
     }
 
-  ////////////////////////////////////////////////////
-  /**
+    ////////////////////////////////////////////////////
+    /**
      * @return Collection|Horaire[]  
      */
     public function getHoraires(): Collection
@@ -88,5 +93,5 @@ class Film
 
         return $this;
     }
-  ////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
 }
