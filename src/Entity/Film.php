@@ -23,7 +23,7 @@ class Film
     // cascade: ["persist"] =  Cela permet d'enregistrer ton objet Film en enregistrant un objet enfant, ici Horaire.
 
     #[ORM\OneToMany(targetEntity: "App\Entity\Horaire", mappedBy: "film", cascade: ["persist"])] 
-    private $horaires;
+    private $horaires; 
 
 
 

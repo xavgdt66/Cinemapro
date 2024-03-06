@@ -16,13 +16,40 @@ class Salle
 
 
     #[ORM\Column(type: "int")]
-    private string $Numérosalle;
+    private int $Numerosalle;
+
+
+    #[ORM\Column(type: "int")]
+    private int $Capacite; 
+    
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->id; 
+    }
+    
+    public function getNumerosalle(): ?int
+    {
+        return $this->Numerosalle;   
     }
 
+    public function setNumerosalle(?int $Numerosalle): self
+    {
+        $this->Numerosalle = $Numerosalle;
 
+        return $this;
+    }
+
+    public function getCapacite(): ?int
+    {
+        return $this->Capacite;   
+    }
+
+    public function setCapacite(?int $Capacite): self
+    {
+        $this->Capacite = $Capacite;
+
+        return $this;
+    }
 
 }
