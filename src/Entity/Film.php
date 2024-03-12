@@ -8,7 +8,7 @@ use App\Repository\FilmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
-class Film
+class Film 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

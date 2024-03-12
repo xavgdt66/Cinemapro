@@ -15,13 +15,31 @@ class Salle
     private int $id; 
 
 
-    #[ORM\Column(type: "int")]
+    #[ORM\Column(type: "integer")]
     private int $Numerosalle;
 
 
-    #[ORM\Column(type: "int")]
+    #[ORM\Column(type: "integer")]
     private int $Capacite; 
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"salle")] 
+    #[ORM\JoinColumn(nullable:false)]
+    
+    private $user;  
+    public function getuser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setuser(?User $users): self
+    {
+        $this->user = $users;
+
+        return $this;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function getId(): int
     {

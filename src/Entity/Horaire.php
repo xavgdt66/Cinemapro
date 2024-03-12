@@ -12,7 +12,7 @@ class Horaire
    #[ORM\Column] 
    private int $id; 
 
-   #[ORM\Column(type: "time")]
+   #[ORM\Column(type: "time")] 
    private \DateTimeInterface $heure;
 
  ////////////////////////////////

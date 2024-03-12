@@ -7,6 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+
+
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -19,6 +25,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // cascade: ["persist"] =  Cela permet d'enregistrer ton objet Film en enregistrant un objet enfant, ici Horaire.
+
+    #[ORM\OneToMany(targetEntity: "App\Entity\Salle", mappedBy: "user", cascade: ["persist"])]
+    private $Salle;
+
+
+    public function __construct()
+    {
+        $this->Salle = new ArrayCollection();
+    }
+
+     /**
+     * @return Collection|Salle[]  
+     */
+    public function getSalle(): Collection
+    {
+        return $this->Salle;
+    }
+
+    public function addSalle(Salle $Salle): self 
+    {
+        if (!$this->Salle->contains($Salle)) {
+            $this->Salle[] = $Salle;
+            $Salle->setNumerosalle(null);     
+        }
+
+        return $this;
+    }
+
+    public function removeSalle(Salle $Salle): self
+    {
+        if ($this->Salle->contains($Salle)) {
+            $this->Salle->removeElement($Salle);
+            // set the owning side to null (unless already changed)
+            if ($Salle->getNumerosalle() === $this) {
+                $Salle->getNumerosalle(); 
+            }
+        }
+
+        return $this;
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @var list<string> The user roles
