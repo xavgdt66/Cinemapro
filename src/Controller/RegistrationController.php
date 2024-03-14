@@ -16,6 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+use App\Entity\Salle;
+
+
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -29,6 +32,10 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+       ///////////////////////////////////////
+        $salle = new Salle(); // instance de entity salle 
+        $user->addSalle($salle);   // User permet de faire 
+        ///////////////////////////////////////
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -38,8 +45,8 @@ class RegistrationController extends AbstractController
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
-                )
-            );
+                ) 
+            ); 
             $user->setRoles(['ROLE_CINEMA']); // Rolecinema
 
             $entityManager->persist($user);
@@ -62,6 +69,10 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
+
+
+
+
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response

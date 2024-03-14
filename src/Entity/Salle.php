@@ -16,7 +16,7 @@ class Salle
 
 
     #[ORM\Column(type: "integer")]
-    private int $Numerosalle;
+    private ?int $Numerosalle;
 
 
     #[ORM\Column(type: "integer")]
@@ -55,7 +55,7 @@ class Salle
     {
         $this->Numerosalle = $Numerosalle;
 
-        return $this;
+        return $this; 
     }
 
     public function getCapacite(): ?int
@@ -70,4 +70,5 @@ class Salle
         return $this;
     }
 
+    
 }
