@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -12,55 +11,50 @@ class Salle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id; 
+    private int $id;
 
+    #[ORM\Column(type: "integer", nullable: true)] 
+    private ?int $Numerosalle; 
 
-    #[ORM\Column(type: "integer")]
-    private ?int $Numerosalle;
+    #[ORM\Column(type: "integer", nullable: true)] 
+    private ?int $Capacite;
 
-
-    #[ORM\Column(type: "integer")]
-    private int $Capacite; 
-    
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"salle")] 
-    #[ORM\JoinColumn(nullable:false)]
-    
-    private $user;  
-    public function getuser(): ?User
+    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"salles")] 
+    private $user;
+
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setuser(?User $users): self
+    public function setUser(?User $user): self
     {
-        $this->user = $users;
+        $this->user = $user;
+
+        return $this;
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getNumerosalle(): int // Modification ici
+    {
+        return $this->Numerosalle;
+    }
+
+    public function setNumerosalle(int $Numerosalle): self // Modification ici
+    {
+        $this->Numerosalle = $Numerosalle;
 
         return $this;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function getId(): int
-    {
-        return $this->id; 
-    }
-    
-    public function getNumerosalle(): ?int
-    {
-        return $this->Numerosalle;   
-    }
-
-    public function setNumerosalle(?int $Numerosalle): self
-    {
-        $this->Numerosalle = $Numerosalle;
-
-        return $this; 
-    }
-
     public function getCapacite(): ?int
     {
-        return $this->Capacite;   
+        return $this->Capacite;
     }
 
     public function setCapacite(?int $Capacite): self
@@ -69,6 +63,4 @@ class Salle
 
         return $this;
     }
-
-    
 }

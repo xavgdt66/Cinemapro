@@ -29,51 +29,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    #[ORM\Column(type: "integer",nullable:true)]
+    private $nombreSalles;
 
-    // cascade: ["persist"] =  Cela permet d'enregistrer ton objet Film en enregistrant un objet enfant, ici Horaire.
-
-    #[ORM\OneToMany(targetEntity: "App\Entity\Salle", mappedBy: "user", cascade: ["persist"])]
-    private $Salle;
-
-
-    public function __construct()
+    public function getNombreSalles(): ?int
     {
-        $this->Salle = new ArrayCollection();
+        return $this->nombreSalles;
     }
 
-     /**
-     * @return Collection|Salle[]  
-     */
-    public function getSalle(): Collection
+    public function setNombreSalles(?int $nombreSalles): self
     {
-        return $this->Salle;
-    }
-
-    public function addSalle(Salle $Salle): self 
-    {
-        if (!$this->Salle->contains($Salle)) {
-            $this->Salle[] = $Salle;
-            $Salle->setNumerosalle(null);     
-        }
+        $this->nombreSalles = $nombreSalles;
 
         return $this;
     }
 
-    public function removeSalle(Salle $Salle): self
-    {
-        if ($this->Salle->contains($Salle)) {
-            $this->Salle->removeElement($Salle);
-            // set the owning side to null (unless already changed)
-            if ($Salle->getNumerosalle() === $this) {
-                $Salle->getNumerosalle(); 
-            }
-        }
-
-        return $this;
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @var list<string> The user roles
@@ -176,4 +147,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+
+
+
+    //////////////////// Poubelle ////////////////////////////////////////////
+
+
+    // cascade: ["persist"] =  Cela permet d'enregistrer ton objet Film en enregistrant un objet enfant, ici Horaire.
+
+   /* #[ORM\OneToMany(targetEntity: "App\Entity\Salle", mappedBy: "user", cascade: ["persist"])]
+    private $Salle;
+
+
+    public function __construct()
+    {
+        $this->Salle = new ArrayCollection();
+    }*/
+
+     /***  @return Collection|Salle[]  
+     */
+    /*public function getSalle(): Collection
+    {
+        return $this->Salle;
+    }
+
+    public function addSalle(Salle $Salle): self 
+    {
+        if (!$this->Salle->contains($Salle)) {
+            $this->Salle[] = $Salle;
+            $Salle->setNumerosalle(null);     
+        }
+
+        return $this;
+    }
+
+    public function removeSalle(Salle $Salle): self
+    {
+        if ($this->Salle->contains($Salle)) {
+            $this->Salle->removeElement($Salle);
+            // set the owning side to null (unless already changed)
+            if ($Salle->getNumerosalle() === $this) {
+                $Salle->getNumerosalle(); 
+            }
+        }
+
+        return $this;
+    }*/
+
+
+    //////////////////// Poubelle ////////////////////////////////////////////
+
+
+
+
 }

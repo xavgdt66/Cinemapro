@@ -16,6 +16,9 @@ class Horaire
    private \DateTimeInterface $heure;
 
  ////////////////////////////////
+ /* Cette annotation définit une relation "Plusieurs à un" entre deux entités. 
+ La première ligne spécifie l'entité cible de la relation (Film) et la propriété inverse dans cette entité qui est horaires dans l'entity film
+  La deuxième ligne indique qu'une colonne de jointure non nullable doit être créée dans la table de base de données correspondant à cette entité. */
     #[ORM\ManyToOne(targetEntity:"App\Entity\Film", inversedBy:"horaires")] 
     #[ORM\JoinColumn(nullable:false)]
     
