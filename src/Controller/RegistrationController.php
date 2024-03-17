@@ -28,59 +28,59 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
-{
-    $user = new User();
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new User();
 
-    $form = $this->createForm(RegistrationFormType::class, $user);
-    $form->handleRequest($request);
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        // encode the plain password
-        $user->setPassword(
-            $userPasswordHasher->hashPassword(
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $user->setRoles(['ROLE_CINEMA']); // Role cinema
+            $user->setNombreSalles($form->get('nombreSalles')->getData());
+
+            $entityManager->persist($user);
+
+            // Enregistrement des salles
+            $nombreSalles = $form->get('nombreSalles')->getData();
+            for ($i = 0; $i < $nombreSalles; $i++) {
+                $salle = new Salle();
+                // Vous devez ajouter les configurations nécessaires pour chaque salle ici
+                // Par exemple, si la salle doit être liée à l'utilisateur, vous pouvez utiliser setUser()
+                $salle->setUser($user); // Lier la salle à l'utilisateur
+                $entityManager->persist($salle);
+            }
+
+            $entityManager->flush();
+
+            // generate a signed url and email it to the user
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
                 $user,
-                $form->get('plainPassword')->getData()
-            )
-        );
+                (new TemplatedEmail())
+                    ->from(new Address('cinema@noreply.fr', 'xavier'))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
 
-        $user->setRoles(['ROLE_CINEMA']); // Role cinema
-        $user->setNombreSalles($form->get('nombreSalles')->getData());
+            // do anything else you need here, like send an email
 
-        $entityManager->persist($user);
-
-        // Enregistrement des salles
-        $nombreSalles = $form->get('nombreSalles')->getData();
-        for ($i = 0; $i < $nombreSalles; $i++) {
-            $salle = new Salle();
-            // Vous devez ajouter les configurations nécessaires pour chaque salle ici
-            // Par exemple, si la salle doit être liée à l'utilisateur, vous pouvez utiliser setUser()
-            $salle->setUser($user); // Lier la salle à l'utilisateur
-            $entityManager->persist($salle);
+            return $this->redirectToRoute('app_home');
         }
 
-        $entityManager->flush();
-
-        // generate a signed url and email it to the user
-        $this->emailVerifier->sendEmailConfirmation(
-            'app_verify_email',
-            $user,
-            (new TemplatedEmail())
-                ->from(new Address('cinema@noreply.fr', 'xavier'))
-                ->to($user->getEmail())
-                ->subject('Please Confirm your Email')
-                ->htmlTemplate('registration/confirmation_email.html.twig')
-        );
-
-        // do anything else you need here, like send an email
-
-        return $this->redirectToRoute('app_home');
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
-
-    return $this->render('registration/register.html.twig', [
-        'registrationForm' => $form->createView(),
-    ]);
-}
 
 
 
