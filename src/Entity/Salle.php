@@ -40,12 +40,12 @@ class Salle
         return $this->id;
     }
 
-    public function getNumerosalle(): int // Modification ici
+    public function getNumerosalle(): ?int 
     {
         return $this->Numerosalle;
     }
 
-    public function setNumerosalle(int $Numerosalle): self // Modification ici
+    public function setNumerosalle(?int $Numerosalle): self 
     {
         $this->Numerosalle = $Numerosalle;
 

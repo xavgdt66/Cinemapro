@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du film{% endblock %}
+
+{% block body %}
+    <div class="film-details">
+        <h1>{{ film.titre }}</h1>
+        <div class="film-schedule">
+            <p><strong>Horaires :</strong></p>
+            <ul>
+                {% for horaire in film.horaires %}
+                    <li>{{ horaire.heure|date('H:i') }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="film-salles">
+            <p><strong>Salles :</strong></p>
+            <ul>
+                {% for salle in film.salles %}
+                    <li>{{ salle.Numerosalle }} - Capacité: {{ salle.Capacite }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="reservation-section">
+            <h2>Réserver une séance</h2>
+            <div class="reservation-form">
+                {{ form_start(form) }}
+              
+                <div class="form-group">
+                    {{ form_row(form.salle, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Réserver</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -27,6 +27,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 
+    ////////////
+
+// Relationship with Salle entity
+#[ORM\OneToMany(targetEntity: Salle::class, mappedBy: 'user')]
+private Collection $salles;
+
+public function __construct()
+{
+    $this->salles = new ArrayCollection();
+}
+
+
+    /////////////
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     #[ORM\Column(type: "integer",nullable:true)]
@@ -60,6 +74,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+
+
+
 
     public function getId(): ?int
     {
@@ -148,6 +166,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    ///////////SALLES ////////////////////////
+
+ /**
+     * @return Collection|Salle[]
+     */
+    public function getSalles(): Collection
+    {
+        return $this->salles;
+    }
+
+    public function addSalle(Salle $salle): self
+    {
+        if (!$this->salles->contains($salle)) {
+            $this->salles[] = $salle;
+            $salle->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeSalle(Salle $salle): self
+    {
+        if ($this->salles->removeElement($salle)) {
+            // set the owning side to null (unless already changed)
+            if ($salle->getUser() === $this) {
+                $salle->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+
+    //////////////SALLES/////////////////////////
 
 
 
